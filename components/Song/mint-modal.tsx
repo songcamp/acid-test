@@ -593,14 +593,16 @@ export function MintModal({
                             setMintQuantity(WAY_MORE_MIN);
                           }
                         }}
-                        className={`aspect-square flex items-center justify-center border-2 rounded-md text-[10px] transition-colors
+                        className={`aspect-square flex items-center justify-center border-2 rounded-md text-[10px] transition-colors leading-tight
                           ${
                             wayMoreAccordionValue
                               ? "border-white text-white bg-white/10"
                               : "border-white/20 text-white/60 hover:border-white/60 hover:text-white"
                           }`}
                       >
-                        Way More
+                        WAY
+                        <br />
+                        MORE
                       </button>
                     </div>
 
@@ -611,9 +613,19 @@ export function MintModal({
                       onValueChange={setWayMoreAccordionValue}
                       className="w-full"
                     >
-                      <AccordionItem value="more" className="border-none">
-                        <AccordionContent>
-                          <div className="flex items-center gap-4 mt-2">
+                      <AccordionItem
+                        value="more"
+                        className="border-none"
+                      >
+                        <AccordionContent className="pb-0">
+                          <div
+                            className="flex items-center gap-4 mt-2"
+                            onPointerDown={(e) => {
+                              e.stopPropagation();
+                              handleSliderPointerDown(e);
+                            }}
+                            onPointerUp={handleSliderPointerUp}
+                          >
                             <Slider
                               min={WAY_MORE_MIN}
                               max={WAY_MORE_MAX}
@@ -627,8 +639,6 @@ export function MintModal({
                                 setMintQuantity(value[0])
                               }
                               className="flex-1"
-                              onPointerDown={handleSliderPointerDown}
-                              onPointerUp={handleSliderPointerUp}
                             />
                             <span className="text-sm font-medium min-w-[40px] text-right">
                               {mintQuantity}
@@ -726,9 +736,9 @@ export function MintModal({
                       <div>
                         {paymentMethod === "ETH"
                           ? `${(safePrice * mintQuantity).toFixed(6)} ETH`
-                          : `${usdPrice * mintQuantity} USDC`}
+                          : `${(usdPrice * mintQuantity).toFixed(2)} USDC`}
                       </div>
-                      <div className="text-white/60 text-xs h-[16px]">
+                      <div className="text-white/60 text-xs h-4">
                         {paymentMethod === "ETH" &&
                           `$${(safePrice * mintQuantity * ethUsd).toFixed(
                             2
